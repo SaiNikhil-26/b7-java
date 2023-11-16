@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    stages {
+        stage('Execute Shell Script') {
+            steps {
+                script {
+                    def duOutput = sh(script: 'du -h', returnStatus: true)
+                    def dfOutput = sh(script: 'df -h', returnStatus: true)
+                    if (duOutput == 0 && dfOutput == 0) {
+                        currentBuild.result = 'SUCCESS'
+                    } else {
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                }
+            }
+        }
+    }
+}
